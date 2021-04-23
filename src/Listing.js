@@ -17,9 +17,10 @@ const customStyles = {
 
 function Listing() {
     const [listdata, setListdata]= useState([]);
+    const [formdata, setFormdata] = useState({})
     const [modalIsOpen, setIsOpen]= useState(false);
     const [idx, setIdx] =useState(null);
-    const [arr, seArr ] = useState([]);
+    const [arr] = useState([]);
 
     const history = useHistory();
     
@@ -45,20 +46,24 @@ useEffect(()=>{
 
     //to open modal
     const handleEdit = (value,index) => {
-        let obj= listdata[index]
-        console.log(obj)
+        setFormdata({...value})
+        console.log(formdata)
         setIsOpen(true);
         setIdx(index);
         arr.splice(0,1,value);
-        console.log(arr)
-        console.log(index)
-       // setIsOpen(true);
+        // console.log(arr)
+        // console.log(index)
+       
 
     }
 // to update
     const handleUpdate = (value,index) => {
         let data = JSON.parse(localStorage.getItem('array'))
-        data.splice(idx,1,)
+        data.splice(idx,1,formdata)
+        localStorage.setItem('array', JSON.stringify(data))
+        window.alert('Your Data Is Successfully Updated')
+        setIsOpen(false)
+
 
     }    ///to be continued....
 
@@ -142,23 +147,23 @@ useEffect(()=>{
                                         {arr.map((value,index)=>{
                                             return(
                                                 <div>
-                                                    <label >Name: </label>
-                                        <input type="text" defaultValue={value.Name} /><br/><br/>
+                                        <label >Name: </label>
+                                        <input type="text" defaultValue={value.Name} onChange={(e) =>setFormdata({...formdata, Name:e.target.value})} /><br/><br/>
 
                                         <label >Age: </label>
-                                        <input type="text" defaultValue={value.Age}/><br/><br/>
+                                        <input type="text" defaultValue={value.Age} onChange={(e) => setFormdata({...formdata, Age: e.target.value})}/><br/><br/>
 
                                         <label >Gender: </label>
-                                        <input type="text"defaultValue={value.Gender} /><br/><br/>
+                                        <input type="text"defaultValue={value.Gender} onChange= {(e) => setFormdata({...formdata, Gender: e.target.value})} /><br/><br/>
 
                                         <label >Education: </label>
-                                        <input type="text"defaultValue={value.Education} /><br/><br/>
+                                        <input type="text"defaultValue={value.Education} onChange={(e)=> setFormdata({...formdata, Education: e.target.value})} /><br/><br/>
 
                                         <label >Profession: </label>
-                                        <input type="text" defaultValue={value.Profession} /><br/><br/>
+                                        <input type="text" defaultValue={value.Profession} onChange={(e)=> setFormdata({...formdata, Profession: e.target.value})} /><br/><br/>
 
                                         <label >City: </label>
-                                        <input type="text" defaultValue={value.City} /><br/><br/>
+                                        <input type="text" defaultValue={value.City} onChange={(e)=> setFormdata({...formdata, City:e.target.value})}/><br/><br/>
 
                                         <button type='button' onClick={()=>handleUpdate(value,index)}>Update</button>
 
